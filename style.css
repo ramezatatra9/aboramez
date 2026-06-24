@@ -50,16 +50,27 @@ header p {
     font-size: 1.1rem;
 }
 
-.search-container {
-    position: relative;
+.controls-container {
+    display: flex;
+    gap: 1rem;
     margin-bottom: 2rem;
     animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.search-container {
+    flex: 1;
+    position: relative;
+    margin-bottom: 0;
+    animation: none;
+}
+
+.search-container input, select.form-control, input.form-control {
+    font-size: 16px !important; /* Prevents iOS auto-zoom */
 }
 
 .search-container input {
     width: 100%;
     padding: 1.2rem 3.5rem 1.2rem 1.2rem;
-    font-size: 1.1rem;
     font-family: 'Cairo', sans-serif;
     background: var(--surface);
     border: 1px solid var(--surface-border);
@@ -69,6 +80,30 @@ header p {
     transition: all 0.3s ease;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
+
+.sort-container {
+    width: 200px;
+}
+
+.sort-container select {
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+    border-radius: 16px;
+    background: var(--surface);
+    border: 1px solid var(--surface-border);
+    color: var(--text-main);
+    backdrop-filter: blur(12px);
+    font-family: 'Cairo', sans-serif;
+    cursor: pointer;
+}
+
+.sort-container select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+
 
 .search-container input:focus {
     outline: none;
