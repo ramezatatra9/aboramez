@@ -32,23 +32,15 @@
                     </svg>
                 </div>
             </div>
-            <div class="sort-container">
-                <select id="sortSelect" class="form-control" style="height: 100%; min-height: 54px;">
-                    <option value="default">الترتيب الافتراضي</option>
-                    <option value="number">حسب رقم الصنف</option>
-                    <option value="price-asc">السعر: الأقل أولاً</option>
-                    <option value="price-desc">السعر: الأعلى أولاً</option>
-                </select>
-            </div>
         </div>
 
         <div class="table-container">
             <table id="productsTable">
                 <thead>
                     <tr>
-                        <th>رقم الصنف</th>
+                        <th data-sort="number" class="sortable">رقم الصنف <span class="sort-icon" id="sortNumberIcon">↕</span></th>
                         <th>اسم الصنف</th>
-                        <th>السعر</th>
+                        <th data-sort="price" class="sortable">السعر <span class="sort-icon" id="sortPriceIcon">↕</span></th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
