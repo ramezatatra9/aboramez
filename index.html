@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رامز عطاطرة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>استعلام الأصناف</title>
     <!-- iOS Web App Meta Tags -->
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,13 +22,23 @@
             <p>انتبه جدا للمعلومات التي بداخل هذا الموقع لانه يملك معلومات  حساسة</p>
         </header>
         
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="ابحث برقم الصنف، أو اسم الصنف...">
-            <div class="search-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
+        <div class="controls-container">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="ابحث برقم الصنف، أو الاسم، أو السعر...">
+                <div class="search-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </div>
+            </div>
+            <div class="sort-container">
+                <select id="sortSelect" class="form-control" style="height: 100%; min-height: 54px;">
+                    <option value="default">الترتيب الافتراضي</option>
+                    <option value="number">حسب رقم الصنف</option>
+                    <option value="price-asc">السعر: الأقل أولاً</option>
+                    <option value="price-desc">السعر: الأعلى أولاً</option>
+                </select>
             </div>
         </div>
 
