@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء فاتورة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- html2pdf.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container" style="max-width: 900px;">
+        <header>
+            <div class="header-top">
+                <h1>إنشاء فاتورة</h1>
+                <div>
+                    <button id="exportPdfBtn" class="btn btn-primary">تصدير PDF</button>
+                    <a href="index.html" class="btn btn-secondary">العودة للرئيسية</a>
+                </div>
+            </div>
+            <p>قم بإضافة تفاصيل الفاتورة وتصديرها</p>
+        </header>
+
+        <div class="invoice-controls-card" data-html2canvas-ignore="true">
+            <div class="form-group">
+                <label for="customerNameInput">اسم الزبون</label>
+                <input type="text" id="customerNameInput" class="form-control" placeholder="أدخل اسم الزبون...">
+            </div>
+            <div class="form-group">
+                <label for="invoiceDateInput">التاريخ</label>
+                <input type="date" id="invoiceDateInput" class="form-control">
+            </div>
+            
+            <div class="add-item-row">
+                <div class="form-group" style="position: relative;">
+                    <label for="productSearch">بحث عن صنف</label>
+                    <input type="text" id="productSearch" class="form-control" placeholder="ابحث باسم الصنف أو الرقم...">
+                    <div id="autocompleteResults" class="autocomplete-results"></div>
+                </div>
+                <div class="form-group">
+                    <label for="itemQuantity">الكمية</label>
+                    <input type="number" id="itemQuantity" class="form-control" min="1" value="1">
+                </div>
+                <button id="addItemBtn" class="btn btn-primary" style="height: 46px;">إضافة للفاتورة</button>
+            </div>
+        </div>
+
+        <div id="invoice-document" class="invoice-document">
+            <div class="invoice-header">
+                <div>
+                    <h2 class="invoice-title">فاتورة مبيعات</h2>
+                    <div class="invoice-meta">
+                        <p><strong>التاريخ: </strong><span id="displayDate"></span></p>
+                        <p><strong>اسم الزبون: </strong><span id="displayCustomerName">-</span></p>
+                    </div>
+                </div>
+                <div>
+                    <!-- Optional Logo or company info can go here -->
+                    <div style="text-align: left;">
+                        <h3 style="color: #6366f1;">شركة ابو رامز </h3>
+                        <p style="color: #475569;">للأجهزة الكهربائية</p>
+                    </div>
+                </div>
+            </div>
+
+            <table class="invoice-doc-table">
+                <thead>
+                    <tr>
+                        <th>رقم الصنف</th>
+                        <th>اسم الصنف</th>
+                        <th>الكمية</th>
+                        <th>سعر الوحدة</th>
+                        <th>المجموع</th>
+                        <th class="action-cell" data-html2canvas-ignore="true">إجراء</th>
+                    </tr>
+                </thead>
+                <tbody id="invoiceTableBody">
+                    <!-- Invoice items will go here -->
+                </tbody>
+            </table>
+
+            <div class="invoice-summary">
+                <div class="summary-box">
+                    <div class="summary-row total">
+                        <span>الإجمالي:</span>
+                        <span id="grandTotal">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="invoice.js"></script>
+</body>
+</html>
