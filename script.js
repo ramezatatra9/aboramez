@@ -52,18 +52,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial render
     renderTable(products);
 
-    const sortSelect = document.getElementById('sortSelect');
+    // Sort State
+    let sortColumn = 'default';
+    let sortDirection = 'asc'; // 'asc' or 'desc'
 
     // Smart search & Sort logic
     function applySearchAndSort() {
         const query = searchInput.value.trim().toLowerCase();
-        let sortValue = 'default';
-        if (sortSelect) sortValue = sortSelect.value;
         
         // 1. Filter
-        let filtered = products;
+        let filtered = [...products];
         if (query) {
-            filtered = products.filter(product => {
+            filtered = filtered.filter(product => {
                 const num = (product['رقم الصنف'] || '').toLowerCase();
                 const name = (product['اسم الصنف'] || '').toLowerCase();
                 const price = (product['اخر سعر شراء'] || '').toLowerCase();
@@ -77,19 +77,47 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 2. Sort
-        if (sortValue === 'number') {
-            filtered.sort((a, b) => (a['رقم الصنف'] || '').localeCompare(b['رقم الصنف'] || ''));
-        } else if (sortValue === 'price-asc') {
-            filtered.sort((a, b) => (parseFloat(a['اخر سعر شراء']) || 0) - (parseFloat(b['اخر سعر شراء']) || 0));
-        } else if (sortValue === 'price-desc') {
-            filtered.sort((a, b) => (parseFloat(b['اخر سعر شراء']) || 0) - (parseFloat(a['اخر سعر شراء']) || 0));
+        if (sortColumn === 'number') {
+            filtered.sort((a, b) => {
+                const valA = (a['رقم الصنف'] || '');
+                const valB = (b['رقم الصنف'] || '');
+                return sortDirection === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            });
+        } else if (sortColumn === 'price') {
+            filtered.sort((a, b) => {
+                const valA = parseFloat(a['اخر سعر شراء']) || 0;
+                const valB = parseFloat(b['اخر سعر شراء']) || 0;
+                return sortDirection === 'asc' ? valA - valB : valB - valA;
+            });
         }
 
         renderTable(filtered);
     }
 
     searchInput.addEventListener('input', applySearchAndSort);
-    if (sortSelect) {
-        sortSelect.addEventListener('change', applySearchAndSort);
-    }
+
+    // Header click logic
+    const sortableHeaders = document.querySelectorAll('th.sortable');
+    sortableHeaders.forEach(th => {
+        th.addEventListener('click', () => {
+            const column = th.getAttribute('data-sort');
+            
+            // Toggle direction if same column, else reset to asc
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortColumn = column;
+                sortDirection = 'asc';
+            }
+
+            // Update icons
+            document.querySelectorAll('.sort-icon').forEach(icon => icon.textContent = '↕');
+            const icon = th.querySelector('.sort-icon');
+            if (icon) {
+                icon.textContent = sortDirection === 'asc' ? '↑' : '↓';
+            }
+
+            applySearchAndSort();
+        });
+    });
 });
