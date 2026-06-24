@@ -52,26 +52,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial render
     renderTable(products);
 
-    // Smart search logic
-    searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.trim().toLowerCase();
+    const sortSelect = document.getElementById('sortSelect');
+
+    // Smart search & Sort logic
+    function applySearchAndSort() {
+        const query = searchInput.value.trim().toLowerCase();
+        let sortValue = 'default';
+        if (sortSelect) sortValue = sortSelect.value;
         
-        if (!query) {
-            renderTable(products);
-            return;
+        // 1. Filter
+        let filtered = products;
+        if (query) {
+            filtered = products.filter(product => {
+                const num = (product['رقم الصنف'] || '').toLowerCase();
+                const name = (product['اسم الصنف'] || '').toLowerCase();
+                const price = (product['اخر سعر شراء'] || '').toLowerCase();
+                
+                // Smart search: Check if query terms are all present in the product string
+                const searchTerms = query.split(' ');
+                const searchableText = `${num} ${name} ${price}`;
+                
+                return searchTerms.every(term => searchableText.includes(term));
+            });
         }
 
-        const filtered = products.filter(product => {
-            const num = (product['رقم الصنف'] || '').toLowerCase();
-            const name = (product['اسم الصنف'] || '').toLowerCase();
-            
-            // Smart search: Check if query terms are all present in the product string
-            const searchTerms = query.split(' ');
-            const searchableText = `${num} ${name}`;
-            
-            return searchTerms.every(term => searchableText.includes(term));
-        });
+        // 2. Sort
+        if (sortValue === 'number') {
+            filtered.sort((a, b) => (a['رقم الصنف'] || '').localeCompare(b['رقم الصنف'] || ''));
+        } else if (sortValue === 'price-asc') {
+            filtered.sort((a, b) => (parseFloat(a['اخر سعر شراء']) || 0) - (parseFloat(b['اخر سعر شراء']) || 0));
+        } else if (sortValue === 'price-desc') {
+            filtered.sort((a, b) => (parseFloat(b['اخر سعر شراء']) || 0) - (parseFloat(a['اخر سعر شراء']) || 0));
+        }
 
         renderTable(filtered);
-    });
+    }
+
+    searchInput.addEventListener('input', applySearchAndSort);
+    if (sortSelect) {
+        sortSelect.addEventListener('change', applySearchAndSort);
+    }
 });
