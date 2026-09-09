@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         minimumFractionDigits: 0
     });
 
+    // Track highlighted item numbers (persists during search and sort)
+    const highlightedItems = new Set();
+
     // Render table rows
     function renderTable(data) {
         tableBody.innerHTML = '';
@@ -33,6 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const name = product['اسم الصنف'] || '';
             const rawPrice = product['اخر سعر شراء'];
             
+            tr.setAttribute('data-id', num);
+            if (highlightedItems.has(num)) {
+                tr.classList.add('highlighted');
+            }
+
             let price = rawPrice;
             if (rawPrice && !isNaN(rawPrice)) {
                 price = formatter.format(parseFloat(rawPrice));
@@ -48,6 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         tableBody.appendChild(fragment);
     }
+
+    // Toggle highlight on row click
+    tableBody.addEventListener('click', (e) => {
+        const tr = e.target.closest('tr');
+        if (!tr) return;
+        
+        const num = tr.getAttribute('data-id');
+        if (!num) return;
+
+        if (highlightedItems.has(num)) {
+            highlightedItems.delete(num);
+            tr.classList.remove('highlighted');
+        } else {
+            highlightedItems.add(num);
+            tr.classList.add('highlighted');
+        }
+    });
 
     // Initial render
     renderTable(products);
